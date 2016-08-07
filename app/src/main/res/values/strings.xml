@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">Registro de Incidencias</string>
-    <string name="txtTrabajador">Trabajador</string>
-    <string name="txtCliente">Cliente</string>
-    <string name="txtUsuario">Ingresar Usuario</string>
-    <string name="txtClave">Ingresar Clave</string>
-    <string name="txtIngresar">Ingresar</string>
-</resources>
