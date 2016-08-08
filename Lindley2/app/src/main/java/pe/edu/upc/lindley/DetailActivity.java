@@ -59,7 +59,7 @@ public class DetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Bundle bundle =  getIntent().getExtras();
 
-        String idContact = bundle.getString("idContact");
+        final String idContact = bundle.getString("idContact");
         dateTextView = (TextView) findViewById(R.id.dateTextView);
         typeTextView = (TextView) findViewById(R.id.typeTextView);
         aTextView =(TextView) findViewById(R.id.aaatextView);
@@ -77,6 +77,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                     Intent intent = new Intent(DetailActivity.this, NewMessageActivity.class);
+                    intent.putExtra("idcontact", idContact);
                     startActivity(intent);
             }
         });
