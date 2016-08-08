@@ -47,6 +47,7 @@ public class NewMessageActivity extends AppCompatActivity {
     // File related objects
     private Uri fileUri;
     private Uri lastOutputMediaFileUri = null;
+    private String idContact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,11 @@ public class NewMessageActivity extends AppCompatActivity {
 
         btnCamera = (Button) findViewById(R.id.photoButton);
 
+        Intent intent =  getIntent();
+        if (intent != null){
+            idContact = intent.getStringExtra("idcontact");
+            Toast.makeText(this, idContact, Toast.LENGTH_SHORT).show();
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
