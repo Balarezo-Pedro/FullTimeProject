@@ -28,11 +28,30 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class NewMessageActivity extends AppCompatActivity {
 
+    private static final String TAG = "SAVE";
+    private static final int REQUEST_SIGNUP = 0;
+    private static final String URL_SERVICE= "http://rich3dev-001-site1.atempurl.com/api/incidence/";
+
     Button btnCamera;
+    EditText txtComentario;
 
     // System Permissions Request
     private static final int CAMERIFY_PERMISSIONS_REQUEST = 100;
@@ -48,6 +67,10 @@ public class NewMessageActivity extends AppCompatActivity {
     private Uri fileUri;
     private Uri lastOutputMediaFileUri = null;
     private String idContact;
+    private String state ="3";
+    private String comentario;
+    private String nombreFoto;
+    private JsonObjectRequest req;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +80,7 @@ public class NewMessageActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         btnCamera = (Button) findViewById(R.id.photoButton);
+        txtComentario=(EditText)findViewById(R.id.messageEditText) ;
 
         Intent intent =  getIntent();
         if (intent != null){
@@ -68,10 +92,48 @@ public class NewMessageActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+
+                ((Lindley2Aplication) getApplication()).getPhotoService().addPhoto(idContact,txtComentario.getText().toString());
+                comentario=txtComentario.getText().toString();
+                nombreFoto=lastOutputMediaFileUri.getPath();
+
+                try {
+                    String json = "{\"idContact\":\"" + idContact + "\", \"IdContactState\":\"" + state + "\", \"Comment\":\"" + comentario + "\", \"FilePath\":\"" + nombreFoto + "\"  }";
+                    req = new JsonObjectRequest(Request.Method.POST, URL_SERVICE,
+                            new JSONObject(json),
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+// Handle response
+                                    Log.d(TAG, "res:" + response.toString());
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+// Handle Error
+                                }
+                            }) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            HashMap<String, String> headers = new HashMap<String, String>();
+                            headers.put("Content-Type", "application/json; charset=utf-8");
+                            return headers;
+                        }
+                    };
+
+
+                }catch (Exception exc)
+                {
+                    Log.d(TAG, "TestLogin Exception:" + exc.getMessage());
+                }
+                Snackbar.make(view, "FOTO GUARDADA EN MOVIL //  ATENCION TERMINADA", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                finish();
+
 
             }
+
         });
 
         btnCamera.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +144,9 @@ public class NewMessageActivity extends AppCompatActivity {
 
         });
         validatePermissions();
+
+        Volley.newRequestQueue(this).add(req);
+
     }
 
 
