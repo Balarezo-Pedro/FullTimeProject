@@ -10,6 +10,7 @@ public class EntryPhoto extends SugarRecord {
 
     private Date createdPht;
     private String nombreFoto;
+    private String comentario;
 
     public EntryPhoto() {    }
 
@@ -22,6 +23,11 @@ public class EntryPhoto extends SugarRecord {
     }
 
     public String getNombreFoto () { return nombreFoto;   }
-    public void setNombreFoto(String nombreFoto) {this.nombreFoto =nombreFoto;
+    public void setNombreFoto(String nombreFoto) {this.nombreFoto =nombreFoto;    }
+
+    public String getComentario(){return comentario;}
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 }
